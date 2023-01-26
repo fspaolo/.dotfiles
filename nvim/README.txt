@@ -4,10 +4,10 @@
 
     rm -rf ~/.local/share/nvim/
 
-2. clone repo:
+2. [re]make sym link to config:
 
-    `~/.config/nvim/init.lua`
+    ln -s ~/dev/.dotfiles/nvim .config/nvim
 
-2. open nvim, wait, quit, open, quit
+3. open nvim, wait for install, quit, open, quit
 
-3. only then add other plugins and settings
+4. only then add other plugins and settings
