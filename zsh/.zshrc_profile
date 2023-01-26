@@ -1,9 +1,0 @@
-alias vim='nvim'
-
-alias sgpt='/Applications/snap/bin/gpt'
-
-export PATH="$PATH:/Applications/snap/bin"
-. "$HOME/.cargo/env"
-
-# disable creation of __pycache__
-export PYTHONDONTWRITEBYTECODE=1
