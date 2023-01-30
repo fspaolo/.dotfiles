@@ -1,188 +1,343 @@
-call plug#begin('~/.vim/plugged')
-" Plug 'vim-python/python-syntax'                                    " python support
-Plug 'keith/swift.vim'                                             " swift support
-Plug 'dense-analysis/ale'                                          " syntax checker
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }  " install fzf
-Plug 'junegunn/fzf.vim'                                            " set fzf for vim
-Plug 'itchyny/lightline.vim'                                       " power bar
-" Plug 'https://github.com/boblehest/vim-quantum.git'
-" Plug 'https://github.com/rakr/vim-one.git'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
-Plug 'romkatv/powerlevel10k'
-Plug 'lifepillar/vim-mucomplete'                                   " tab completion
-Plug 'yggdroot/indentline'                                         " indent vertical guides
-" Plug 'davidhalter/jedi-vim'                                       " semantic completion Python
-Plug 'KKPMW/vim-sendtowindow'
-Plug 'psf/black'
-call plug#end()
+" designed for vim 8+
+" (see https://rwx.gg/vi for help)
+let skip_defaults_vim=1
+set nocompatible
 
-set encoding=utf-8             " file encoding
-scriptencoding utf-8
-set clipboard+=unnamed         " share clipboard between windows
-set linespace=2                " space between lines for gvim
+let mapleader = "\<space>"
 
-set number                     " show line numbers
+"####################### Vi Compatible (~/.exrc) #######################
+
+" automatically indent new lines
+set autoindent
+
+" automatically write files when changing when multiple files open
+set autowrite
+
+" activate line numbers
+set number
+
+" turn col and row position on in bottom right
+"set ruler
+
+" show command and insert mode
+set showmode
+
+set tabstop=4
+
+"#######################################################################
+
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+" stop vim from silently fucking with files that it shouldn't 
+set nofixendofline
+
+" replace tabs with spaces automatically
+set expandtab
+
+" enough for line numbers + gutter within 80 standard
+set textwidth=72 
+
+" disable relative line numbers, remove no to sample it
 set relativenumber
-set numberwidth=5
-set ruler                      " show the current row and column
-set hlsearch                   " highlight all search matches
-set cursorline                 " highlight current/cursor line
-set linebreak                  " break at word boundaries
-" set showbreak
-set wrap                       " wrap long text lines 
-set expandtab                  " Convert tabs to spaces
-set tabstop=4                  " Set tab size in spaces (this is for manual indenting)
-set shiftwidth=4               " The number of spaces inserted for a tab (used for auto indenting)
-set conceallevel=0             " Show both markup and effect in text
-set guifont=Menlo:h15
-set hidden                     " will hide buffers when abandoned
 
-" Set the status line to something useful
-set statusline=%f\ %m\ %=L:%l/%L\ C:%c\ (%p%%)
+" easier to see characters when `set paste` is on
+set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
+highlight NonText guifg=bg
 
-set textwidth=79              " Force line breaks at width
-set colorcolumn=80            " Make it obvious where 80 characters is
-set formatoptions+=t
+" turn on default spell checking
+"set spell
 
-" Protect changes between writes. Default values of
-" updatecount (200 keystrokes) and updatetime (4 seconds)
-set swapfile
-set directory^=~/.vim/swap//
+" more risky, but cleaner
+set nobackup
+set noswapfile
+set nowritebackup
 
-" Make backup files
-set backup
-set backupdir^=~/.vim/backup//
+"set icon
 
-" Protect against crash-during-write
-set writebackup
+" center the cursor always on the screen
+"set scrolloff=999
 
-" use rename-and-write-new method whenever safe
-set backupcopy=auto
+" highlight search hits,  \+<cr> to clear 
+"set hlsearch
+set incsearch
+set linebreak
+"map <silent> <leader><cr> :noh<cr>:redraw!<cr>
 
-" persist the undo tree for each file
-" set undofile
-" set undodir^=~/.vim/undo//
+" avoid most of the 'Hit Enter ...' messages
+"set shortmess=aoOtIF
 
-" save the buffer whenever text is changed
-" autocmd TextChanged,TextChangedI <buffer> silent write
+" prevents truncated yanks, deletes, etc.
+"set viminfo='20,<1000,s1000
 
-" press return to get out of the highlighted search
-nnoremap <CR> :nohlsearch<CR><CR>
+" not a fan of bracket matching or folding
+"let g:loaded_matchparen=1
+"set noshowmatch
+"set foldmethod=manual
 
-" Color theme
+" Just the defaults, these are changed per filetype by plugins.
+" Most of the utility of all of this has been superceded by the use of
+" modern simplified pandoc for capturing knowledge source instead of
+" arbitrary raw text files.
+
+"set formatoptions-=t   " don't auto-wrap text using text width
+"set formatoptions+=c   " autowrap comments using textwidth with leader
+"set formatoptions-=r   " don't auto-insert comment leader on enter in insert
+"set formatoptions-=o   " don't auto-insert comment leader on o/O in normal
+"set formatoptions+=q   " allow formatting of comments with gq
+"set formatoptions-=w   " don't use trailing whitespace for paragraphs
+"set formatoptions-=a   " disable auto-formatting of paragraph changes
+"set formatoptions-=n   " don't recognized numbered lists
+"set formatoptions+=j   " delete comment prefix when joining
+"set formatoptions-=2   " don't use the indent of second paragraph line
+"set formatoptions-=v   " don't use broken 'vi-compatible auto-wrapping'
+"set formatoptions-=b   " don't use broken 'vi-compatible auto-wrapping'
+"set formatoptions+=l   " long lines not broken in insert mode
+"set formatoptions+=m   " multi-byte character line break support
+"set formatoptions+=M   " don't add space before or after multi-byte char
+"set formatoptions-=B   " don't add space between two multi-byte chars in join 
+"set formatoptions+=1   " don't break a line after a one-letter word
+
+" requires PLATFORM env variable set (in ~/.bashrc)
+if $PLATFORM == 'mac'
+  " required for mac delete to work
+  set backspace=indent,eol,start
+endif
+
+" stop complaints about switching buffer with changes
+set hidden
+
+" command history
+set history=100
+
+" here because plugins and stuff need it
 syntax enable
-colorscheme material
 
-" Disables transparency when in vim
-hi Normal ctermbg=0
+" faster scrolling
+set ttyfast
 
-" 'default' | 'palenight' | 'ocean' | 'lighter' | 'darker'
-let g:material_theme_style = 'material'
+" allow sensing the filetype
+filetype plugin on
 
-" Color theme of power bar
-let g:lightline = { 'colorscheme': 'material_vim' }
+" Install vim-plug if not already installed
+" (Yes I know about Vim 8 Plugins. They suck.)
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+  echo "Don't forget to GoInstallBinaries if you're doing Go dev."
+endif
 
-" Character used for vertical guides
-let g:indentLine_char = '⎸'
+" high contrast for streaming, etc.
+set background=dark
 
-" Make your code look pretty
-let g:python_highlight_all = 1
+" only load plugins if Plug detected
+if filereadable(expand("~/.vim/autoload/plug.vim"))
 
-" netrw setup (file tree look)
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 25
+  " load all the plugins
+  call plug#begin('~/.vimplugins')
+  Plug 'sheerun/vim-polyglot'
+  Plug 'vim-pandoc/vim-pandoc'
+  "Plug 'rwxrob/vim-pandoc-syntax-simple'
+  "Plug 'https://gitlab.com/rwx.gg/abnf'
+  "Plug 'WolfgangMehner/bash-support' " borkish
+  Plug 'cespare/vim-toml'
+  "Plug 'pangloss/vim-javascript'
+  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+  "Plug 'PProvost/vim-ps1'
+  Plug 'tpope/vim-fugitive'
+  "Plug 'tpope/unimpaired'
+  "Plug 'airblade/vim-gitgutter'
+  Plug 'rakr/vim-one'
+  call plug#end()
 
-" Always enable preview window on the right with 60% width
-let g:fzf_preview_window = 'right:60%'
+  "autocmd!
 
-" Display file tree at opening
-"augroup ProjectDrawer
-"    autocmd!
-"    autocmd VimEnter * :Vexplore
-"augroup END
+  colorscheme one
+  hi Normal ctermbg=NONE " for transparent background
+  hi SpellBad ctermbg=red " for transparent background
+  hi SpellRare ctermbg=red
+  hi Special ctermfg=cyan 
+  au FileType pandoc hi pandocAtxHeader ctermfg=yellow cterm=bold
+  au FileType pandoc hi pandocAtxHeaderMark ctermfg=yellow cterm=bold
+  au FileType pandoc hi pandocAtxStart ctermfg=yellow cterm=bold
 
-" Navigation between windows
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+  set cursorline
+  "set noshowmode
+  set rulerformat=%55(%f\ %y%r\ %l:%c\ %p%%%) "55 effective max
+  "set noruler
+  
+  " status line
+  set statusline=%!MyStatusLine()
+  set laststatus=2
+  set cmdheight=1
+  hi StatusLine ctermbg=NONE ctermfg=LightBlue
 
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
+  " pandoc
+  let g:pandoc#formatting#mode = 'h' " A'
+  let g:pandoc#formatting#textwidth = 72
 
-" Enable folding with the spacebar
-nnoremap <space> za
+  " golang
+  "let g:go_fmt_command = 'goimports'
+  let g:go_fmt_command = 'gofmt'
+  let g:go_fmt_fail_silently = 1
+  let g:go_fmt_autosave = 1
+  let g:go_gopls_enabled = 1
+  let g:go_highlight_types = 1
+  let g:go_highlight_fields = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_variable_declarations = 1
+  let g:go_highlight_variable_assignments = 1
+  let g:go_highlight_build_constraints = 1
+  let g:go_highlight_diagnostic_errors = 1
+  let g:go_highlight_diagnostic_warnings = 1
+  let g:go_auto_type_info = 1
+  let g:go_auto_sameids = 0
 
-" PEP 8 indentation and length
-"au Filetype python
-"\ set tabstop=4 |
-"\ set softtabstop=4 |
-"\ set shiftwidth=4 |
-"\ set textwidth=79 |
-"\ set expandtab |
-"\ set autoindent |
-"\ set fileformat=unix
+  " NOTE: Not working!
+  "let g:go_metalinter_enabled = []
+  "let g:go_metalinter_command = 'golangci-lint'
+  "let g:go_metalinter_autosave = 1
 
-" Check Python files with flake8
-let g:ale_linters = {'python': ['flake8']}
+  set updatetime=100
+  "let g:go_gopls_analyses = { 'composites' : v:false }
+  au FileType go nmap <leader>t :GoTest<CR>
+  au FileType go nmap <leader>v :GoVet<CR>
+  au FileType go nmap <leader>b :GoBuild<CR>
+  au FileType go nmap <leader>c :GoCoverageToggle<CR>
+  au FileType go nmap <leader>i :GoInfo<CR>
+  au FileType go nmap <leader>l :GoMetaLinter!<CR>
+  au FileType go nmap <leader>f :GoFmt<CR>
 
-" Fix Python files with black and isort
-let g:ale_fixers = { 
-	\ 'python' : [
-		\ 'black', 
-		\ 'isort', 
-		\ 'reorder-python-imports', 
-		\ 'remove_trailing_lines', 
-		\ 'trim_whitespace',
-	\ ]
-\ }
+else
+  autocmd vimleavepre *.go !gofmt -w % " backup if fatih fails
+endif
 
-" Pass options to black
-let g:ale_python_black_options = '-l 79'
+" make Y consitent with D and C (yank til end)
+map Y y$
 
-" 		\ 'add_blank_lines_for_python_control_statements', 
+" better command-line completion
+set wildmenu
 
-" Change Black's default 88 line length
-let g:black_linelength = 79
+" disable search highlighting with <C-L> when refreshing screen
+nnoremap <C-L> :nohl<CR><C-L>
 
-" Silence warning on whitespace before ':'
-let g:flake8_ignore = 'E203'
+" enable omni-completion
+set omnifunc=syntaxcomplete#Complete
 
-" Disable line length checking
-"let g:ale_python_flake8_args='--ignore=F821,E302,E501,E203'
+" force some file names to be specific file type
+au bufnewfile,bufRead *.bash* set ft=sh
+au bufnewfile,bufRead *.pegn set ft=config
+au bufnewfile,bufRead *.profile set filetype=sh
+au bufnewfile,bufRead *.crontab set filetype=crontab
+au bufnewfile,bufRead *ssh/config set filetype=sshconfig
+au bufnewfile,bufRead *gitconfig set filetype=gitconfig
+au bufnewfile,bufRead /tmp/psql.edit.* set syntax=sql
+au bufnewfile,bufRead doc.go set spell
 
-" Flagging Unnecessary Whitespace
-highlight BadWhitespace ctermbg=darkred guibg=darkred
-" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+" fun! s:DetectGo()
+"     if getline(1) == 'package main'
+"         set ft=go
+"     endif
+" endfun
+" autocmd BufNewFile,BufRead * call s:DetectGo()
 
-" Linelight bar to show up
-set laststatus=2
+" displays all the syntax rules for current position, useful
+" when writing vimscript syntax plugins
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc  
 
-" MuComplete and jedi-vim
-set completeopt-=preview
-set completeopt+=longest,menuone,noselect
-set shortmess+=c  " shut off completion messages
-set belloff+=ctrlg  " if Vim beeps during completion
-" let g:mucomplete#force_manual = 1
-let g:mucomplete#auto_completion = 0
-" let g:jedi#popup_on_dot = 1  " It may be 1 as well
+" start at last place you were editing
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"au BufWritePost ~/.vimrc so ~/.vimrc
 
-" Display extra whitespace
-set list listchars=tab:»·,trail:·,nbsp:·
+" functions keys
+"map <F1> :set number!<CR> :set relativenumber!<CR>
+"nmap <F2> :call <SID>SynStack()<CR>
+"set pastetoggle=<F3>
+"map <F4> :set list!<CR>
+"map <F5> :set cursorline!<CR>
+"map <F7> :set spell!<CR>
+"map <F12> :set fdm=indent<CR>
 
-" File protection with chmod
-" --------------------------
-" Command    		Meaning
-" chmod 400 file    	To protect a file against accidental overwriting.
-" chmod 500 directory   To protect yourself from accidentally removing, renaming or moving files from this directory.
-" chmod 600 file    	A private file only changeable by the user who entered this command.
-" chmod 644 file    	A publicly readable file that can only be changed by the issuing user.
-" chmod 660 file    	Users belonging to your group can change this file, others don't have any access to it at all.
-" chmod 700 file    	Protects a file against any access from other users, while the issuing user still has full access.
-" chmod 755 directory   For files that should be readable and executable by others, but only changeable by the issuing user.
-" chmod 775 file    	Standard file sharing mode for a group.
-" chmod 778 file    	Everybody can do everything to this file.
+"nmap <leader>2 :set paste<CR>
+
+" navigate (fly) through buffers
+nmap <C-h> :bfirst<CR>
+nmap <C-j> :bprev<CR>
+nmap <C-k> :bnext<CR>
+nmap <C-l> :blast<CR>
+
+" disable arrow keys (vi muscle memory)
+noremap <up> :echoerr "Umm, use k instead"<CR>
+noremap <down> :echoerr "Umm, use j instead"<CR>
+noremap <left> :echoerr "Umm, use h instead"<CR>
+noremap <right> :echoerr "Umm, use l instead"<CR>
+inoremap <up> <NOP>
+inoremap <down> <NOP>
+inoremap <left> <NOP>
+inoremap <right> <NOP>
+
+" Better page down and page up
+noremap <C-n> <C-d>
+noremap <C-p> <C-b>
+
+" read personal/private vim configuration (keep last to override)
+"set rtp^=~/.vimpersonal
+"set rtp^=~/.vimprivate
+
+"hi StatusLineNC term=none cterm=none gui=none
+"hi StatusLine term=reverse ctermfg=LightGray cterm=nocombine 
+
+nnoremap <Leader>cc :set colorcolumn=80<CR>
+nnoremap <Leader>ncc :set colorcolumn=-80<CR>
+
+
+" Custom statusline https://github.com/changemewtf/dotfiles
+function! MyStatusLine()
+
+    let statusline = " "
+    " Buffer number
+    let statusline .= "%n  "
+    " Filename (F -> full, f -> relative)
+    let statusline .= "%f "
+    " Left/right separator
+    let statusline .= "%="
+    " Buffer flags
+    let statusline .= "%( %h%1*%m%*%r%w%) "
+    " Git branch
+    let statusline .= GetGitBranch()
+    " File format
+    let statusline .= "  %{&ff} "
+    " File type
+    let statusline .= " %Y "
+    " Character under cursor (decimal)
+    "let statusline .= "%03.3b"
+    " Character under cursor (hexadecimal)
+    "let statusline .= "|0x%02.2B  "
+    " File progress
+    let statusline .= " %P/%L "
+    " Line & column
+    let statusline .= " %l:%v "
+    return statusline
+endfunction
+
+
+function! GetGitBranch()
+    :let s:branch_name = system("git rev-parse --abbrev-ref HEAD")
+    :let s:notidx = match(s:branch_name, 'fatal: not a git repository')
+    :if s:notidx == -1
+        :let s:branch_name = strtrans(s:branch_name)
+        :let s:branch_name = s:branch_name[:-3]
+        :return 'git.' . s:branch_name . ''
+    :endif
+    :return ''
+endfunction
