@@ -334,7 +334,7 @@ endfunction
 function! GetGitBranch()
     :let s:branch_name = system("git rev-parse --abbrev-ref HEAD")
     :let s:notidx = match(s:branch_name, 'fatal: not a git repository')
-    :if s:notidx == -1
+    :if s:notidx == 0
         :let s:branch_name = strtrans(s:branch_name)
         :let s:branch_name = s:branch_name[:-3]
         :return 'git.' . s:branch_name . ''

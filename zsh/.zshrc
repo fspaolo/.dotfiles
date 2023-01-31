@@ -1,10 +1,13 @@
-alias sgpt='/Applications/snap/bin/gpt'
+alias ls='ls -FG'
 
-# export PATH="$PATH:/Applications/snap/bin"
-# . "$HOME/.cargo/env"
+alias sgpt='/Applications/snap/bin/gpt'
+export PATH="$PATH:/Applications/snap/bin"
 
 # disable creation of __pycache__
 export PYTHONDONTWRITEBYTECODE=1
+
+source '/Users/fspaolo/anaconda3/etc/profile.d/conda.sh'
+
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -22,8 +25,14 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 
-# Open tmux by default
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-      exec tmux
-fi
-
+parse_git_branch() {
+        git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
+    }
+    COLOR_DEF='%f'
+    COLOR_USR='%F{243}'
+    COLOR_DIR='%F{197}'
+    COLOR_GIT='%F{39}'
+    NEWLINE=$'\n'
+    setopt PROMPT_SUBST
+    export PROMPT='(${CONDA_DEFAULT_ENV}) ${COLOR_USR}%n@${COLOR_DIR}%d ${COLOR_GIT}$(parse_git_branch)${COLOR_DEF}${NEWLINE}%% '
+    # export PROMPT='${COLOR_USR}%n@%M ${COLOR_DIR}%d ${COLOR_GIT}$(parse_git_branch)${COLOR_DEF}${NEWLINE}%% '
