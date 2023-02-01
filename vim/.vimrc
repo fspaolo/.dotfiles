@@ -138,15 +138,15 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " load all the plugins
   call plug#begin('~/.vimplugins')
   Plug 'sheerun/vim-polyglot'
-  Plug 'vim-pandoc/vim-pandoc'
+  "Plug 'vim-pandoc/vim-pandoc'
   "Plug 'rwxrob/vim-pandoc-syntax-simple'
   "Plug 'https://gitlab.com/rwx.gg/abnf'
   "Plug 'WolfgangMehner/bash-support' " borkish
-  Plug 'cespare/vim-toml'
+  "Plug 'cespare/vim-toml'
   "Plug 'pangloss/vim-javascript'
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
   "Plug 'PProvost/vim-ps1'
-  Plug 'tpope/vim-fugitive'
+  "Plug 'tpope/vim-fugitive'
   "Plug 'tpope/unimpaired'
   "Plug 'airblade/vim-gitgutter'
   Plug 'rakr/vim-one'
@@ -159,9 +159,9 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   hi SpellBad ctermbg=red " for transparent background
   hi SpellRare ctermbg=red
   hi Special ctermfg=cyan 
-  au FileType pandoc hi pandocAtxHeader ctermfg=yellow cterm=bold
-  au FileType pandoc hi pandocAtxHeaderMark ctermfg=yellow cterm=bold
-  au FileType pandoc hi pandocAtxStart ctermfg=yellow cterm=bold
+  "au FileType pandoc hi pandocAtxHeader ctermfg=yellow cterm=bold
+  "au FileType pandoc hi pandocAtxHeaderMark ctermfg=yellow cterm=bold
+  "au FileType pandoc hi pandocAtxStart ctermfg=yellow cterm=bold
 
   set cursorline
   "set noshowmode
@@ -175,8 +175,8 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   hi StatusLine ctermbg=NONE ctermfg=LightBlue
 
   " pandoc
-  let g:pandoc#formatting#mode = 'h' " A'
-  let g:pandoc#formatting#textwidth = 72
+  "let g:pandoc#formatting#mode = 'h' " A'
+  "let g:pandoc#formatting#textwidth = 72
 
   " golang
   "let g:go_fmt_command = 'goimports'
@@ -314,7 +314,7 @@ function! MyStatusLine()
     " Buffer flags
     let statusline .= "%( %h%1*%m%*%r%w%) "
     " Git branch
-    let statusline .= GetGitBranch()
+    "let statusline .= GetGitBranch()
     " File format
     let statusline .= "  %{&ff} "
     " File type
@@ -331,6 +331,7 @@ function! MyStatusLine()
 endfunction
 
 
+" Not working properly!
 function! GetGitBranch()
     :let s:branch_name = system("git rev-parse --abbrev-ref HEAD")
     :let s:notidx = match(s:branch_name, 'fatal: not a git repository')

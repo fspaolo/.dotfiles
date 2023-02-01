@@ -24,7 +24,12 @@ window:
    x: 10
    y: 10
 
-  decorations: Full
+  decorations: 'Full'
+
+key_bindings:
+  # Move cursor word by word
+  - { key: L, mods: Alt, chars: "\x1BF" }  # ->
+  - { key: H,  mods: Alt, chars: "\x1BB" } # <-
 
 # Colors (Ayu Dark)
 colors:
