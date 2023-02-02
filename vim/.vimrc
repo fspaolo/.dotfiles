@@ -60,9 +60,10 @@ set nowritebackup
 "set scrolloff=999
 
 " highlight search hits,  \+<cr> to clear 
-"set hlsearch
+set nohlsearch
 set incsearch
-set linebreak
+set nowrap
+"set linebreak
 "map <silent> <leader><cr> :noh<cr>:redraw!<cr>
 
 " avoid most of the 'Hit Enter ...' messages
@@ -271,10 +272,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 "nmap <leader>2 :set paste<CR>
 
 " navigate (fly) through buffers
-nmap <C-h> :bfirst<CR>
-nmap <C-j> :bprev<CR>
-nmap <C-k> :bnext<CR>
-nmap <C-l> :blast<CR>
+nmap <C-p> :bprev<CR>
+nmap <C-n> :bnext<CR>
 
 " disable arrow keys (vi muscle memory)
 noremap <up> :echoerr "Umm, use k instead"<CR>
@@ -287,8 +286,8 @@ inoremap <left> <NOP>
 inoremap <right> <NOP>
 
 " Better page down and page up
-noremap <C-n> <C-d>
-noremap <C-p> <C-b>
+"noremap <C-n> <C-d>
+"noremap <C-p> <C-b>
 
 " read personal/private vim configuration (keep last to override)
 "set rtp^=~/.vimpersonal
