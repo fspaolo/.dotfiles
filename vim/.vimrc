@@ -154,14 +154,13 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " Minimal syntax highligting w/ customiazations
   colorscheme bruin
 
-  "set t_ut=''
-  "hi Comment cterm=italic ctermfg=Gray
-  "hi String ctermfg=DarkCyan
-  "hi SpellRare ctermbg=red
+  hi Comment ctermfg=87
+  hi String ctermfg=DarkCyan
+  hi SpellRare ctermbg=red
 
-  " Prevent plugins to mess with colors
-  "hi LineNr ctermbg=NONE ctermfg=DarkGray
-  "hi StatusLine cterm=nocombine
+  " Prevent plugins to mess with some colors
+  hi LineNr ctermbg=NONE ctermfg=DarkGray
+  hi StatusLine cterm=nocombine
 
   " Custom status line
   set statusline=%!MyStatusLine()
