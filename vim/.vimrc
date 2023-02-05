@@ -5,8 +5,6 @@ set nocompatible
 
 let mapleader = "\<space>"
 
-"####################### Vi Compatible (~/.exrc) #######################
-
 " automatically indent new lines
 set autoindent
 
@@ -16,55 +14,65 @@ set autowrite
 " activate line numbers
 set number
 
-" turn col and row position on in bottom right
-"set ruler
+" disable relative line numbers, remove no to sample it
+set relativenumber
 
 " show command and insert mode
 set showmode
 
+" Replace tabs with spaces
 set tabstop=4
-
-"#######################################################################
-
 set softtabstop=4
 set shiftwidth=4
-set expandtab
+set expandtab                  
+
+" break at word boundaries
+set linebreak                  
+
+" wrap long text lines 
+set wrap                       
+
+" Force line breaks at width
+"set textwidth=79
 
 " stop vim from silently fucking with files that it shouldn't 
 set nofixendofline
 
-" replace tabs with spaces automatically
-set expandtab
+" easier to see characters when `:set paste` is on
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
+"highlight NonText guifg=bg
 
-" enough for line numbers + gutter within 80 standard
-set textwidth=72 
-
-" disable relative line numbers, remove no to sample it
-set relativenumber
-
-" easier to see characters when `set paste` is on
-set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
-highlight NonText guifg=bg
-
-" turn on default spell checking
-"set spell
+" Flag unnecessary whitespace
+"highlight BadWhitespace ctermbg=darkred guibg=darkred
 
 " more risky, but cleaner
 set nobackup
 set noswapfile
 set nowritebackup
 
-"set icon
+set noicon
 
 " center the cursor always on the screen
 "set scrolloff=999
 
-" highlight search hits,  \+<cr> to clear 
-set nohlsearch
+" Use line cursor in insert mode and block everywhere else
+" Reference chart of values:
+"   Ps = 0  -> blinking block.
+"   Ps = 1  -> blinking block (default).
+"   Ps = 2  -> steady block.
+"   Ps = 3  -> blinking underline.
+"   Ps = 4  -> steady underline.
+"   Ps = 5  -> blinking bar (xterm).
+"   Ps = 6  -> steady bar (xterm).
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[1 q"
+
+" highlight search hits -> \+<cr> to clear 
+set hlsearch
 set incsearch
-set nowrap
-"set linebreak
-"map <silent> <leader><cr> :noh<cr>:redraw!<cr>
+
+" disable search highlighting with <C-L> when refreshing screen
+nnoremap <C-L> :nohl<CR><C-L>
 
 " avoid most of the 'Hit Enter ...' messages
 "set shortmess=aoOtIF
@@ -101,10 +109,10 @@ set nowrap
 "set formatoptions+=1   " don't break a line after a one-letter word
 
 " requires PLATFORM env variable set (in ~/.bashrc)
-if $PLATFORM == 'mac'
-  " required for mac delete to work
-  set backspace=indent,eol,start
-endif
+"if $PLATFORM == 'mac'
+"  " required for mac delete to work
+"  set backspace=indent,eol,start
+"endif
 
 " stop complaints about switching buffer with changes
 set hidden
@@ -139,48 +147,28 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " load all the plugins
   call plug#begin('~/.vimplugins')
   Plug 'sheerun/vim-polyglot'
-  "Plug 'vim-pandoc/vim-pandoc'
-  "Plug 'rwxrob/vim-pandoc-syntax-simple'
-  "Plug 'https://gitlab.com/rwx.gg/abnf'
-  "Plug 'WolfgangMehner/bash-support' " borkish
-  "Plug 'cespare/vim-toml'
-  "Plug 'pangloss/vim-javascript'
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-  "Plug 'PProvost/vim-ps1'
-  "Plug 'tpope/vim-fugitive'
-  "Plug 'tpope/unimpaired'
-  "Plug 'airblade/vim-gitgutter'
-  Plug 'rakr/vim-one'
+  Plug 'https://git.sr.ht/~romainl/vim-bruin'
   call plug#end()
 
-  "autocmd!
+  " Minimal syntax highligting w/ customiazations
+  colorscheme bruin
 
-  colorscheme one
-  hi Normal ctermbg=NONE " for transparent background
-  hi SpellBad ctermbg=red " for transparent background
-  hi SpellRare ctermbg=red
-  hi Special ctermfg=cyan 
-  "au FileType pandoc hi pandocAtxHeader ctermfg=yellow cterm=bold
-  "au FileType pandoc hi pandocAtxHeaderMark ctermfg=yellow cterm=bold
-  "au FileType pandoc hi pandocAtxStart ctermfg=yellow cterm=bold
+  "set t_ut=''
+  "hi Comment cterm=italic ctermfg=Gray
+  "hi String ctermfg=DarkCyan
+  "hi SpellRare ctermbg=red
 
-  set cursorline
-  "set noshowmode
-  set rulerformat=%55(%f\ %y%r\ %l:%c\ %p%%%) "55 effective max
-  "set noruler
-  
-  " status line
+  " Prevent plugins to mess with colors
+  "hi LineNr ctermbg=NONE ctermfg=DarkGray
+  "hi StatusLine cterm=nocombine
+
+  " Custom status line
   set statusline=%!MyStatusLine()
   set laststatus=2
   set cmdheight=1
-  hi StatusLine ctermbg=NONE ctermfg=LightBlue
-
-  " pandoc
-  "let g:pandoc#formatting#mode = 'h' " A'
-  "let g:pandoc#formatting#textwidth = 72
 
   " golang
-  "let g:go_fmt_command = 'goimports'
   let g:go_fmt_command = 'gofmt'
   let g:go_fmt_fail_silently = 1
   let g:go_fmt_autosave = 1
@@ -218,14 +206,22 @@ else
   autocmd vimleavepre *.go !gofmt -w % " backup if fatih fails
 endif
 
+
+" netrw configuration
+let g:netrw_banner=0        " disable banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+" hide gitignore'd files
+let g:netrw_list_hide=netrw_gitignore#Hide()
+" hide dotfiles by default (this is the string toggled by netrw-gh)
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
 " make Y consitent with D and C (yank til end)
 map Y y$
 
 " better command-line completion
 set wildmenu
-
-" disable search highlighting with <C-L> when refreshing screen
-nnoremap <C-L> :nohl<CR><C-L>
 
 " enable omni-completion
 set omnifunc=syntaxcomplete#Complete
@@ -249,12 +245,12 @@ au bufnewfile,bufRead doc.go set spell
 
 " displays all the syntax rules for current position, useful
 " when writing vimscript syntax plugins
-function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc  
+"function! <SID>SynStack()
+"  if !exists("*synstack")
+"    return
+"  endif
+"    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+"endfunc  
 
 " start at last place you were editing
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -272,8 +268,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 "nmap <leader>2 :set paste<CR>
 
 " navigate (fly) through buffers
-nmap <C-p> :bprev<CR>
-nmap <C-n> :bnext<CR>
+nmap <C-n> :bnext<CR>  " ->
+nmap <C-p> :bprev<CR>  " <-
 
 " disable arrow keys (vi muscle memory)
 noremap <up> :echoerr "Umm, use k instead"<CR>
@@ -293,29 +289,28 @@ inoremap <right> <NOP>
 "set rtp^=~/.vimpersonal
 "set rtp^=~/.vimprivate
 
-"hi StatusLineNC term=none cterm=none gui=none
-"hi StatusLine term=reverse ctermfg=LightGray cterm=nocombine 
-
+" Vertical column on demand 
 nnoremap <Leader>cc :set colorcolumn=80<CR>
 nnoremap <Leader>ncc :set colorcolumn=-80<CR>
 
 
 " Custom statusline https://github.com/changemewtf/dotfiles
 function! MyStatusLine()
-
     let statusline = " "
+    " Number of buffers
+    let statusline .= "(%{len(getbufinfo())}) "
     " Buffer number
-    let statusline .= "%n  "
+    let statusline .= "%n "
     " Filename (F -> full, f -> relative)
     let statusline .= "%f "
-    " Left/right separator
-    let statusline .= "%="
     " Buffer flags
-    let statusline .= "%( %h%1*%m%*%r%w%) "
+    "let statusline .= "%( %h%1*%m%*%r%w%) "
     " Git branch
     "let statusline .= GetGitBranch()
+    " Left/right separator
+    let statusline .= "%="
     " File format
-    let statusline .= "  %{&ff} "
+    let statusline .= " %{&ff} "
     " File type
     let statusline .= " %Y "
     " Character under cursor (decimal)

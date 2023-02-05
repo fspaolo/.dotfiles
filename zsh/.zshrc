@@ -1,6 +1,6 @@
 # exec bash
 
-alias ls='ls -G'
+alias ls='ls -F'
 alias sgpt='/Applications/snap/bin/gpt'
 
 export PATH="$PATH:/Applications/snap/bin"
@@ -27,14 +27,15 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 # Colored prompt
+# https://misc.flogisoft.com/bash/tip_colors_and_formatting
 git_branch() {
     git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
     }
 COLOR_DEF='%f'
-COLOR_USR='%F{243}'
-COLOR_DIR='%F{197}'
-COLOR_GIT='%F{39}'
+COLOR_USR='%F{14}'
+COLOR_DIR='%F{14}'
+COLOR_GIT='%F{14}'
 NEWLINE=$'\n'
 setopt PROMPT_SUBST
 # export PROMPT='${COLOR_USR}%n@${COLOR_DIR}%d ${COLOR_GIT}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
-export PROMPT='${COLOR_DIR}%d ${COLOR_GIT}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
+export PROMPT='${COLOR_DEF}%d ${COLOR_DEF}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
