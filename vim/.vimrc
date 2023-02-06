@@ -154,9 +154,11 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   " Minimal syntax highligting w/ customiazations
   colorscheme bruin
 
-  hi Comment ctermfg=87
-  hi String ctermfg=DarkCyan
-  hi SpellRare ctermbg=red
+  hi Comment ctermfg=245
+  "hi Number ctermfg=130
+  hi Number ctermfg=Cyan
+  hi String ctermfg=Cyan
+  hi SpellRare ctermfg=196
 
   " Prevent plugins to mess with some colors
   hi LineNr ctermbg=NONE ctermfg=DarkGray
@@ -319,7 +321,7 @@ function! MyStatusLine()
     " File progress
     let statusline .= " %P/%L "
     " Line & column
-    let statusline .= " %l:%v "
+    let statusline .= " %l,%v "
     return statusline
 endfunction
 
