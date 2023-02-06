@@ -15,7 +15,7 @@ window:
    y: 10
 
   dimensions:
-    columns: 88
+    columns: 90
     lines: 28
 
   decorations: 'Full'
