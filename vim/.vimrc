@@ -157,6 +157,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   hi Number ctermfg=116
   hi String ctermfg=116
   hi SpellRare ctermfg=196
+  hi Title ctermfg=150
 
   " Prevent plugins to mess with some colors
   hi LineNr ctermbg=NONE ctermfg=DarkGray
