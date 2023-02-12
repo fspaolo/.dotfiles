@@ -15,10 +15,10 @@ window:
    y: 10
 
   dimensions:
-    columns: 90
+    columns: 95
     lines: 28
 
-  decorations: 'Full'
+  decorations: 'Buttonless'
 
 key_bindings:
   # Move cursor word by word
@@ -27,5 +27,5 @@ key_bindings:
 
 colors:
   primary:
-    background: '#1E2127'
-    # foreground: '#E3E3EA'
+    # foreground: '#7DFDFE'
+    background: '0x122637'

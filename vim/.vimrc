@@ -1,5 +1,3 @@
-" designed for vim 8+
-" (see https://rwx.gg/vi for help)
 let skip_defaults_vim=1
 set nocompatible
 
@@ -108,17 +106,21 @@ nnoremap <C-L> :nohl<CR><C-L>
 "set formatoptions-=B   " don't add space between two multi-byte chars in join 
 "set formatoptions+=1   " don't break a line after a one-letter word
 
-" requires PLATFORM env variable set (in ~/.bashrc)
-"if $PLATFORM == 'mac'
-"  " required for mac delete to work
-"  set backspace=indent,eol,start
-"endif
-
 " stop complaints about switching buffer with changes
 set hidden
 
 " command history
 set history=100
+
+" For clever completion with the :find command
+set path+=**
+
+" Typing behavior
+set backspace=indent,eol,start
+set showmatch
+set wildmode=full
+set wildmenu
+set complete-=i
 
 " here because plugins and stuff need it
 syntax enable
@@ -146,21 +148,21 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
 
   " load all the plugins
   call plug#begin('~/.vimplugins')
-  Plug 'sheerun/vim-polyglot'
+  "Plug 'sheerun/vim-polyglot'
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+  Plug 'junegunn/fzf.vim'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'https://git.sr.ht/~romainl/vim-bruin'
   call plug#end()
 
-  " Minimal syntax highligting w/ customiazations
+  " Minimal syntax highligting
   colorscheme bruin
-  hi Comment ctermfg=245
-  hi Number ctermfg=116
-  hi String ctermfg=116
-  hi SpellRare ctermfg=196
-  hi Title ctermfg=150
+  hi Comment ctermfg=152
+  hi String ctermfg=152
+  hi Title ctermfg=152
 
-  " Prevent plugins to mess with some colors
-  hi LineNr ctermbg=NONE ctermfg=DarkGray
+  " Prevent plugins to mess with colors
+  hi LineNr ctermbg=NONE ctermfg=244
   hi StatusLine cterm=nocombine
 
   " Custom status line
@@ -170,15 +172,17 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
 
   " golang
   let g:go_fmt_command = 'gofmt'
-  let g:go_fmt_fail_silently = 1
+  let g:go_fmt_fail_silently = 0
   let g:go_fmt_autosave = 1
   let g:go_gopls_enabled = 1
   let g:go_highlight_types = 1
   let g:go_highlight_fields = 1
   let g:go_highlight_functions = 1
+  let g:go_highlight_methods = 1
   let g:go_highlight_function_calls = 1
   let g:go_highlight_operators = 1
   let g:go_highlight_extra_types = 1
+  let g:go_highlight_structs = 1
   let g:go_highlight_variable_declarations = 1
   let g:go_highlight_variable_assignments = 1
   let g:go_highlight_build_constraints = 1
@@ -187,7 +191,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   let g:go_auto_type_info = 1
   let g:go_auto_sameids = 0
 
-  " NOTE: Not working!
+  " Not working!
   "let g:go_metalinter_enabled = []
   "let g:go_metalinter_command = 'golangci-lint'
   "let g:go_metalinter_autosave = 1
@@ -219,9 +223,6 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 " make Y consitent with D and C (yank til end)
 map Y y$
-
-" better command-line completion
-set wildmenu
 
 " enable omni-completion
 set omnifunc=syntaxcomplete#Complete
@@ -293,12 +294,15 @@ inoremap <right> <NOP>
 nnoremap <Leader>cc :set colorcolumn=80<CR>
 nnoremap <Leader>ncc :set colorcolumn=-80<CR>
 
+" Fix <C-]> not working with ctags
+nnoremap <C-]> <C-]>
+
 
 " Custom statusline https://github.com/changemewtf/dotfiles
 function! MyStatusLine()
     let statusline = " "
     " Number of buffers
-    let statusline .= "(%{len(getbufinfo())}) "
+    "let statusline .= "(%{len(getbufinfo())}) "
     " Buffer number
     let statusline .= "%n "
     " Filename (F -> full, f -> relative)

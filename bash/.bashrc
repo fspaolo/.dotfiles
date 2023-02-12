@@ -1,6 +1,4 @@
-# exec bash
-
-alias ls='ls -F'
+alias ls='ls -G'
 alias sgpt='/Applications/snap/bin/gpt'
 
 export PATH="$PATH:/Applications/snap/bin"
@@ -26,22 +24,14 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# Colored prompt
-# https://misc.flogisoft.com/bash/tip_colors_and_formatting
-git_branch() {
-    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
+# Display prompt
+parse_git_branch() {
+        git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
     }
-COLOR_DEF='%f'
-COLOR_USR='%F{14}'
-COLOR_DIR='%F{123}'
-COLOR_GIT='%F{14}'
-NEWLINE=$'\n'
-setopt PROMPT_SUBST
-# export PROMPT='${COLOR_USR}%n@${COLOR_DIR}%d ${COLOR_GIT}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
-export PROMPT='${COLOR_DEF}%d ${COLOR_DEF}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
-
-# FZF
-if type rg &> /dev/null; then
-  export FZF_DEFAULT_COMMAND='rg --files'
-  export FZF_DEFAULT_OPTS='-m --height 80% --border'
-fi
+    COLOR_DEF='%f'
+    COLOR_USR='%F{243}'
+    COLOR_DIR='%F{197}'
+    COLOR_GIT='%F{39}'
+    NEWLINE=$'\n'
+    setopt PROMPT_SUBST
+    export PROMPT='${COLOR_USR}%n@${COLOR_DIR}%d ${COLOR_GIT}$(parse_git_branch)${COLOR_DEF}${NEWLINE}%% '
