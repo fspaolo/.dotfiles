@@ -8,8 +8,32 @@ export PATH="$PATH:/Applications/snap/bin"
 # disable creation of __pycache__
 export PYTHONDONTWRITEBYTECODE=1
 
-# source '/Users/fspaolo/anaconda3/etc/profile.d/conda.sh'
+# Colored prompt
+# https://misc.flogisoft.com/bash/tip_colors_and_formatting
+git_branch() {
+    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
+    }
+COLOR_DEF='%f'
+COLOR_USR='%F{14}'
+COLOR_DIR='%F{123}'
+COLOR_GIT='%F{14}'
+NEWLINE=$'\n'
+setopt PROMPT_SUBST
+# export PROMPT='${COLOR_USR}%n@${COLOR_DIR}%d ${COLOR_GIT}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
+export PROMPT='${COLOR_DEF}%d ${COLOR_DEF}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
 
+# Set fzf -> ripgrep (include dotfiles but exclude .git)
+if type rg &> /dev/null; then
+  export FZF_DEFAULT_COMMAND='rg --files --hidden -g !.git/'
+  export FZF_DEFAULT_OPTS='-m --height 80% --border'
+fi
+
+# call script for fzf -> tmux session
+bindkey -s ^f "tmux-sessionizer\n"
+
+# ===== CONDA STUFF ===== #
+
+# source '/Users/fspaolo/anaconda3/etc/profile.d/conda.sh'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -25,23 +49,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-# Colored prompt
-# https://misc.flogisoft.com/bash/tip_colors_and_formatting
-git_branch() {
-    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
-    }
-COLOR_DEF='%f'
-COLOR_USR='%F{14}'
-COLOR_DIR='%F{123}'
-COLOR_GIT='%F{14}'
-NEWLINE=$'\n'
-setopt PROMPT_SUBST
-# export PROMPT='${COLOR_USR}%n@${COLOR_DIR}%d ${COLOR_GIT}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
-export PROMPT='${COLOR_DEF}%d ${COLOR_DEF}$(git_branch)${COLOR_DEF}${NEWLINE}%% '
-
-# FZF
-if type rg &> /dev/null; then
-  export FZF_DEFAULT_COMMAND='rg --files'
-  export FZF_DEFAULT_OPTS='-m --height 80% --border'
-fi
