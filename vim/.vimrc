@@ -37,11 +37,11 @@ set wrap
 set nofixendofline
 
 " easier to see characters when `:set paste` is on
-"set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
-"highlight NonText guifg=bg
+set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
+highlight NonText guifg=bg
 
 " Flag unnecessary whitespace
-"highlight BadWhitespace ctermbg=darkred guibg=darkred
+highlight BadWhitespace ctermbg=darkred guibg=darkred
 
 " more risky, but cleaner
 set nobackup
@@ -70,7 +70,16 @@ set hlsearch
 set incsearch
 
 " disable search highlighting with <C-L> when refreshing screen
-nnoremap <C-L> :nohl<CR><C-L>
+nnoremap <C-l> :nohl<CR><C-L>
+
+" call fzf sessionizer from inside vim
+nnoremap <C-f> :!tmux neww tmux-sessionizer<CR>
+
+" call fzf + ripgrep from inside vim
+nnoremap <C-o> :FZF<CR>
+
+" call ripgrep to search current text 
+nnoremap <C-/> :Rg<CR>
 
 " avoid most of the 'Hit Enter ...' messages
 "set shortmess=aoOtIF
@@ -163,7 +172,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
 
   " Prevent plugins to mess with colors
   hi LineNr ctermbg=NONE ctermfg=244
-  hi StatusLine cterm=nocombine
+  hi StatusLine cterm=nocombine ctermbg=DarkGray
 
   " Custom status line
   set statusline=%!MyStatusLine()
@@ -214,7 +223,6 @@ endif
 " netrw configuration
 let g:netrw_banner=0        " disable banner
 let g:netrw_browse_split=4  " open in prior window
-let g:netrw_altv=1          " open splits to the right
 let g:netrw_liststyle=3     " tree view
 " hide gitignore'd files
 let g:netrw_list_hide=netrw_gitignore#Hide()
@@ -266,11 +274,18 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 "map <F7> :set spell!<CR>
 "map <F12> :set fdm=indent<CR>
 
-"nmap <leader>2 :set paste<CR>
+" Paste formatted text in vim
+nmap <leader>p :set paste<CR>
 
-" navigate (fly) through buffers
+"s Navigate (fly) through buffers
 nmap <C-n> :bnext<CR>  " ->
 nmap <C-p> :bprev<CR>  " <-
+
+" Copy selected block to the clipboard
+vnoremap <C-c> "*y
+
+" Write at the end of selected block
+vnoremap <C-e> :s/$/
 
 " disable arrow keys (vi muscle memory)
 noremap <up> :echoerr "Umm, use k instead"<CR>
@@ -294,9 +309,6 @@ inoremap <right> <NOP>
 nnoremap <Leader>cc :set colorcolumn=80<CR>
 nnoremap <Leader>ncc :set colorcolumn=-80<CR>
 
-" Fix <C-]> not working with ctags
-nnoremap <C-]> <C-]>
-
 
 " Custom statusline https://github.com/changemewtf/dotfiles
 function! MyStatusLine()
@@ -310,7 +322,7 @@ function! MyStatusLine()
     " Buffer flags
     "let statusline .= "%( %h%1*%m%*%r%w%) "
     " Git branch
-    "let statusline .= GetGitBranch()
+    let statusline .= GetGitBranch()
     " Left/right separator
     let statusline .= "%="
     " File format
@@ -336,7 +348,7 @@ function! GetGitBranch()
     :if s:notidx == 0
         :let s:branch_name = strtrans(s:branch_name)
         :let s:branch_name = s:branch_name[:-3]
-        :return 'git.' . s:branch_name . ''
+        :return ' |' . s:branch_name . ''
     :endif
     :return ''
 endfunction

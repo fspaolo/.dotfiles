@@ -2,6 +2,7 @@
 
 alias ls='ls -F'
 alias sgpt='/Applications/snap/bin/gpt'
+alias python='/usr/local/Caskroom/miniforge/base/bin/python'
 
 export PATH="$PATH:/Applications/snap/bin"
 
@@ -25,11 +26,25 @@ export PROMPT='${COLOR_DEF}%d ${COLOR_DEF}$(git_branch)${COLOR_DEF}${NEWLINE}%% 
 # Set fzf -> ripgrep (include dotfiles but exclude .git)
 if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files --hidden -g !.git/'
-  export FZF_DEFAULT_OPTS='-m --height 80% --border'
+  # export FZF_DEFAULT_OPTS='-m --height 80% --border'
 fi
 
-# call script for fzf -> tmux session
-bindkey -s ^f "tmux-sessionizer\n"
+# Call fzf -> dirs -> tmux session
+bindkey -s ^f 'tmux-sessionizer^M'
+
+# Call fzf -> files -> vim
+# source:https://stackoverflow.com/a/65375231/2571881
+# ~/.dotfiles/zsh/autoload/vif
+function vif() {
+    local fname
+    local current_dir=$PWD
+    # cd ~/dotfiles
+    fname=$(fzf) || return
+    vim "$fname"
+    cd $current_dir
+}
+# https://jdhao.github.io/2019/06/13/zsh_bind_keys/
+bindkey -s '^o' 'vif^M'
 
 # ===== CONDA STUFF ===== #
 
@@ -49,3 +64,9 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/fspaolo/Downloads/google-cloud-sdk 2/path.zsh.inc' ]; then . '/Users/fspaolo/Downloads/google-cloud-sdk 2/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/fspaolo/Downloads/google-cloud-sdk 2/completion.zsh.inc' ]; then . '/Users/fspaolo/Downloads/google-cloud-sdk 2/completion.zsh.inc'; fi

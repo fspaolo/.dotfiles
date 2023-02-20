@@ -15,8 +15,8 @@ window:
    y: 10
 
   dimensions:
-    columns: 95
-    lines: 28
+    columns: 120
+    lines: 45
 
   decorations: 'Buttonless'
 
