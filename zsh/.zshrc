@@ -4,7 +4,11 @@ alias ls='ls -F'
 alias sgpt='/Applications/snap/bin/gpt'
 alias python='/usr/local/Caskroom/miniforge/base/bin/python'
 
-export PATH="$PATH:/Applications/snap/bin"
+PATH="$PATH:/Applications/snap/bin"
+
+PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
+
+export PATH
 
 # disable creation of __pycache__
 export PYTHONDONTWRITEBYTECODE=1
