@@ -145,12 +145,11 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
 
   " load all the plugins
   call plug#begin('~/.vimplugins')
+  Plug 'dense-analysis/ale'
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'andreypopp/vim-colors-plain'
-  Plug 'https://git.sr.ht/~romainl/vim-bruin'
-  Plug 'https://github.com/pbrisbin/vim-colors-off'
   call plug#end()
 
   " You might have to force true color when using regular vim inside tmux as the

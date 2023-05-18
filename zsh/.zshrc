@@ -2,7 +2,8 @@
 
 alias ls='ls -F'
 alias sgpt='/Applications/snap/bin/gpt'
-alias python='/usr/local/Caskroom/miniforge/base/bin/python'
+# alias python='/usr/local/Caskroom/miniforge/base/bin/python'
+# alias pip='pip3'
 
 PATH="$PATH:/Applications/snap/bin"
 
@@ -70,7 +71,12 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/fspaolo/Downloads/google-cloud-sdk 2/path.zsh.inc' ]; then . '/Users/fspaolo/Downloads/google-cloud-sdk 2/path.zsh.inc'; fi
+if [ -f '/Users/fspaolo/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/fspaolo/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/fspaolo/Downloads/google-cloud-sdk 2/completion.zsh.inc' ]; then . '/Users/fspaolo/Downloads/google-cloud-sdk 2/completion.zsh.inc'; fi
+if [ -f '/Users/fspaolo/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/fspaolo/google-cloud-sdk/completion.zsh.inc'; fi
+
+# ========== #
+
+# So tmux carries over all environment-specific paths
+[[ -z $TMUX ]] || conda deactivate; conda activate base
