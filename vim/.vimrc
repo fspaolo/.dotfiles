@@ -134,7 +134,7 @@ syntax enable
 filetype plugin indent on
 
 " high contrast for streaming, etc.
-set background=dark
+set background=light
 
 " allow italic on tmux
 let &t_ZH="\e[3m"
@@ -150,6 +150,7 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'andreypopp/vim-colors-plain'
+  Plug 'overvale/vacme'
   call plug#end()
 
   " You might have to force true color when using regular vim inside tmux as the
@@ -168,7 +169,8 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
   "" Enable true color on term
   "set termguicolors
 
-  colorscheme plain
+  "colorscheme plain
+  colorscheme vacme
 
   " Custom highlighting (Apply after colorscheme)
   " Based https://github.com/Preetam/Infimum
@@ -332,29 +334,29 @@ set cmdheight=1
 
 " CUSTOM STATUS BAR
 " https://dustri.org/b/lightweight-and-sexy-status-bar-in-vim.html
-set statusline=
-set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
-set statusline+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ ':''}
-set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ RPLACE\ ':''}
-set statusline+=%#Cursor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
-set statusline+=\ %n\                      " buffer number
-set statusline+=%#Visual#                  " colour
-set statusline+=%{&paste?'\ PASTE\ ':''}
-set statusline+=%{&spell?'\ SPELL\ ':''}
-set statusline+=%#CursorIM#                " colour
-set statusline+=%R                         " readonly flag
-set statusline+=%M                         " modified [+] flag
-set statusline+=%#Cursor#                  " colour
-set statusline+=%#CursorLine#              " colour
-set statusline+=\ %t\                      " short file name
-set statusline+=%{GitStatus()}             " current git branch
-set statusline+=%=                         " right align
-set statusline+=%#CursorLine#              " colour
-set statusline+=\ %Y\                      " file type
-set statusline+=%#CursorIM#                " colour
-set statusline+=\ %3l:%-2c\                " line + column
-set statusline+=%#Cursor#                  " colour
-set statusline+=\ %3p%%\                   " percentage
+"set statusline=
+"set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
+"set statusline+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ ':''}
+"set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ RPLACE\ ':''}
+"set statusline+=%#Cursor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
+"set statusline+=\ %n\                      " buffer number
+"set statusline+=%#Visual#                  " colour
+"set statusline+=%{&paste?'\ PASTE\ ':''}
+"set statusline+=%{&spell?'\ SPELL\ ':''}
+"set statusline+=%#CursorIM#                " colour
+"set statusline+=%R                         " readonly flag
+"set statusline+=%M                         " modified [+] flag
+"set statusline+=%#Cursor#                  " colour
+"set statusline+=%#CursorLine#              " colour
+"set statusline+=\ %t\                      " short file name
+"set statusline+=%{GitStatus()}             " current git branch
+"set statusline+=%=                         " right align
+"set statusline+=%#CursorLine#              " colour
+"set statusline+=\ %Y\                      " file type
+"set statusline+=%#CursorIM#                " colour
+"set statusline+=\ %3l:%-2c\                " line + column
+"set statusline+=%#Cursor#                  " colour
+"set statusline+=\ %3p%%\                   " percentage
 
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")

@@ -6,9 +6,7 @@ alias sgpt='/Applications/snap/bin/gpt'
 # alias pip='pip3'
 
 PATH="$PATH:/Applications/snap/bin"
-
 PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
-
 export PATH
 
 # disable creation of __pycache__
